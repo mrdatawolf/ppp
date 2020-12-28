@@ -7,17 +7,17 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     @if(Auth::check())
                         <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
+                            {{ __('Home') }}
                         </x-jet-nav-link>
                     @endif
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Link1') }}
+                    <x-jet-nav-link href="{{ route('free_shipping') }}" :active="request()->routeIs('free_shipping')">
+                        {{ __('Free Shipping!') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Link2') }}
+                    <x-jet-nav-link href="{{ route('rewards_signup') }}" :active="request()->routeIs('rewards_signup')">
+                        {{ __('Sign up for Rewards') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Link3') }}
+                    <x-jet-nav-link href="{{ route('mailing_list_signup') }}" :active="request()->routeIs('mailing_list_signup')">
+                        {{ __('Join our mailing list!') }}
                     </x-jet-nav-link>
                 </div>
             </div>
@@ -129,18 +129,18 @@
                 </div>
                 <x-jet-input class="block w-full h-8  items-center" type="text" name="original" required autofocus placeholder="Search" />
             <div class="cart_block">
-                <span class='material-icons' title="0 item(s)"> shopping_cart</span>
+                <a href="{{ route('shopping_cart') }}"><span class='material-icons' title="0 item(s)"> shopping_cart</span></a>
             </div>
         </div>
         <div class="flex justify-between h-12">
             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-jet-nav-link href="{{ route('men_landing') }}" :active="request()->routeIs('men_landing')">
                     {{ __('MEN') }}
                 </x-jet-nav-link>
-                <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-jet-nav-link href="{{ route('women_landing') }}" :active="request()->routeIs('women_landing')">
                     {{ __('WOMEN') }}
                 </x-jet-nav-link>
-                <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-jet-nav-link href="{{ route('shoes_landing') }}" :active="request()->routeIs('shoes_landing')">
                     {{ __('SHOES') }}
                 </x-jet-nav-link>
             </div>
