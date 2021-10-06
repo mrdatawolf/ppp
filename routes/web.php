@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExcelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,14 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/landing', function () {
+    return view('welcome');
+})->name('landing');
+
+// Route for view/blade file.
+Route::get('importExportView', [ExcelController::class, 'importExportView'])->name('importExportView');
+// Route for export/download tabledata to .csv, .xls or .xlsx
+Route::get('exportExcel/{type}', [ExcelController::class, 'exportExcel'])->name('exportExcel');
+// Route for import excel data to database.
+Route::post('importExcel', [ExcelController::class, 'importExcel'])->name('importExcel');
