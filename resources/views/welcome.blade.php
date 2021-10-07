@@ -65,11 +65,6 @@
                     Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                 </div>
             </div>
-            <div class="max-w-12xl mx-auto">
-                <div class="drop-box rounded" id="input-file">Place file here</div>
-                <div class="drop-box rounded" id="output-file-1">POS File link will be here</div>
-                <div class="drop-box rounded" id="output-file-2">Shopify File link will be here</div>
-            </div>
         </div>
     </body>
 </html>

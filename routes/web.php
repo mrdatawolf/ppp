@@ -22,10 +22,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/landing', function () {
-    return view('welcome');
-})->name('landing');
-
 // Route for view/blade file.
 Route::get('importExportView', [ExcelController::class, 'importExportView'])->name('importExportView');
 // Route for export/download tabledata to .csv, .xls or .xlsx
