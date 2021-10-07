@@ -23,7 +23,7 @@
                     <form style="border: 4px solid #a1a1a1;margin-top: 15px;padding: 10px;" action="{{ route('importExcel') }}" class="form-horizontal" method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <h4>Fields left blank will use defaults!</h4>
-                        @livewire('ponumber-input')
+                        @livewire('po-number-input')
 
                         <input type="text" placeholder="Bill To Store" id="billToStore" name="billToStore">
                         <input type="text" placeholder="Ship To Store" id="shipToStore" name="shipToStore">
