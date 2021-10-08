@@ -16,12 +16,11 @@ class PoNumberInput extends Component
     }
 
     private function setPoNumber() {
-        $this->poNumber = (empty($this->vendorName)) ? 'Pick a Vendor' : Carbon::now()->format('m/d/y').strtoupper(substr($this->vendorName, 0, 2));
+        $this->poNumber = Carbon::now()->format('mdy');
     }
 
     public function vendorChanged($name) {
         $this->vendorName = $name;
-        $this->setPoNumber();
     }
 
 

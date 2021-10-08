@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Exports\POSExport;
 use App\Imports\JansportImport;
+use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel;
@@ -23,7 +24,7 @@ class vendorToPos extends Command
     protected $signature = 'convert:vendorToPOS
                                 {vendor}
                                 {inputFile}
-                                {--poNumber= : specify a po number to use}
+                                {poNumber : specify a po number to use}
                                 {--saveAs= : give the name of the file to output}';
 
     /**
@@ -52,7 +53,7 @@ class vendorToPos extends Command
      */
     public function handle()
     {
-        $this->vendor    = strtolower($this->argument('vendor'));
+        $this->vendor    = Vendor::where('name', $this->argument('vendor'))->first();
         $this->inputFile = strtolower($this->argument('inputFile'));
 
         $this->makePoNumber();
@@ -67,7 +68,7 @@ class vendorToPos extends Command
         }
         $export = new POSExport($arrays);
         Excel::store($export, $this->exportFile);
-        $this->output->text('Finished making '.$this->exportFile.' for '.$this->vendor.'!');
+        $this->output->text('Finished making '.$this->exportFile.' for '.$this->vendor->name.'!');
 
         return 0;
     }
@@ -75,7 +76,7 @@ class vendorToPos extends Command
 
     protected function makePoNumber()
     {
-        $poNumber       = $this->option('poNumber') ?? Carbon::now()->format('m/d/y').substr($this->vendor, 0, 2);
+        $poNumber       = $this->argument('poNumber');
         $this->poNumber = strtolower($poNumber);
     }
 
@@ -98,9 +99,9 @@ class vendorToPos extends Command
         $cancelDate     = Carbon::now()->format('m/d/y');
         $billToStore    = '0';
         $shipToStore    = '0';
-        $dcs            = 'CLOWN PAN';
-        $poVendorCode   = $this->vendor;
-        $itemVendorCode = $this->vendor;
+        $dcs            = '';
+        $poVendorCode   = $this->vendor->po_vendor_code;
+        $itemVendorCode = $this->vendor->item_vendor_code;
         $cost           = '0';
         $taxable        = 'taxable';
         $orderQty       = '0';

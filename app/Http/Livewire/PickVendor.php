@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Vendor;
 use Livewire\Component;
 
 class PickVendor extends Component
@@ -14,11 +15,11 @@ class PickVendor extends Component
     {
         $this->vendor = 0;
 
-        $this->vendors = [
-            0 => 'Select Vendor',
-            1 => 'Jansport',
-            2 => 'Carhart'
-        ];
+        $vendors = Vendor::orderBy('name')->get();
+        $this->vendors = [0 => 'Select Vendor'];
+        foreach($vendors as $vendor) {
+            $this->vendors[$vendor->id] = $vendor->name;
+        }
     }
 
     public function vendorChange() {
