@@ -24,17 +24,13 @@
                         {{ csrf_field() }}
                         <h4>Fields left blank will use defaults!</h4>
                         @livewire('po-number-input')
-
-                        <input type="text" placeholder="Bill To Store" id="billToStore" name="billToStore">
-                        <input type="text" placeholder="Ship To Store" id="shipToStore" name="shipToStore">
-                        <input type="text" placeholder="DCS" id="dcs" name="dcs">
-                        <input type="text" placeholder="PO Vendor Code" id="poVendorCode" name="poVendorCode">
-                        <input type="text" placeholder="Item Vendor Code" id="itemVendorCode" name="itemVendorCode">
-                        <input type="text" placeholder="Base Cost" id="baseCost" name="baseCost">
+                        @livewire('po-vendor-code-input')
+                        @livewire('item-vendor-code-input')
                         <br>
-                        <label for="orderDate">Order Date: </label><input type="date" id="orderDate">
-                        <label for="shipDate">Ship Date: </label><input type="date" id="shipDate">
-                        <label for="cancelDate">Cancel Date: </label><input type="date" id="cancelDate">
+                        @livewire('order-date-input')
+                        @livewire('ship-date-input')
+                        @livewire('cancel-date-input')
+
                         <br><hr>
                         <input type="file" name="import_file" class="w-half">
                         <button class="w-half inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-200 text-base font-medium text-white hover:bg-green-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">Import File</button>
