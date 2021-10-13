@@ -20,7 +20,8 @@ trait fileProcessor
     {
 
         $importCollections = $this->convertFile($inputFile);
-        $arrays = $this->processCollection($vendor, $importCollections, $poVendorCode, $itemVendorCode, $poNumber);
+        $arrays            = $this->processCollection($vendor, $importCollections, $poVendorCode, $itemVendorCode,
+            $poNumber);
 
         return $arrays;
     }
@@ -33,7 +34,7 @@ trait fileProcessor
      */
     protected function processCollection($vendor, $importCollections, $poVendorCode, $itemVendorCode, $poNumber): array
     {
-        $arrays            = [];
+        $arrays = [];
         foreach ($importCollections as $collections) {
             foreach ($collections as $row) {
                 $arrays[] = $this->buildArrayFromRow($vendor, $row, $poVendorCode, $itemVendorCode, $poNumber);
@@ -65,7 +66,9 @@ trait fileProcessor
         return new POSExport($import);
     }
 
-    protected function createExport($import) {
+
+    protected function createExport($import)
+    {
         $export = $this->buildExport($import);
         Excel::store($export, $this->exportFile);
     }
@@ -82,15 +85,15 @@ trait fileProcessor
      */
     protected function buildArrayFromRow($vendor, $row, $poVendorCode, $itemVendorCode, $poNumber): array
     {
-        $orderDate      = Carbon::now()->format('m/d/y');
-        $shipDate       = Carbon::now()->format('m/d/y');
-        $cancelDate     = Carbon::now()->format('m/d/y');
-        $billToStore    = '0';
-        $shipToStore    = '0';
-        $dcs            = '';
-        $cost           = '0';
-        $taxable        = 'taxable';
-        $orderQty       = '0';
+        $orderDate   = Carbon::now()->format('m/d/y');
+        $shipDate    = Carbon::now()->format('m/d/y');
+        $cancelDate  = Carbon::now()->format('m/d/y');
+        $billToStore = '0';
+        $shipToStore = '0';
+        $dcs         = '';
+        $cost        = '0';
+        $taxable     = 'taxable';
+        $orderQty    = '0';
         $conversions = $this->conversionBuilder($vendor);
 
         return [
@@ -100,7 +103,7 @@ trait fileProcessor
             'CancelDate'     => $cancelDate,
             'BillToStore'    => $billToStore,
             'ShiptoStore'    => $shipToStore,
-            'UPC'            => trim(($row[$conversions['UPC']])?? ''),
+            'UPC'            => trim(($row[$conversions['UPC']]) ?? ''),
             'DCS'            => $dcs,
             'POVendorCode'   => $poVendorCode,
             'ItemVendorCode' => $itemVendorCode,
@@ -126,7 +129,7 @@ trait fileProcessor
         $conversions = [];
         switch ($vendor) {
             case 'Jansport' :
-                $conversions    = [
+                $conversions = [
                     'UPC'          => 'upc_code',
                     'Description2' => 'style',
                     'Attr'         => 'color',
@@ -136,7 +139,7 @@ trait fileProcessor
                 ];
                 break;
             case 'Outdoor Research' :
-                $conversions    = [
+                $conversions = [
                     'UPC'          => 'upc',
                     'Description2' => 'short_description',
                     'Attr'         => 'color_family',
@@ -146,7 +149,7 @@ trait fileProcessor
                 ];
                 break;
             case 'Kuhl' :
-                $conversions    = [
+                $conversions = [
                     'UPC'          => 'upc',
                     'Description2' => 'style',
                     'Attr'         => 'color',
