@@ -82,6 +82,7 @@ class ImportButton extends Component
 
     public function processFile()
     {
+        ini_set('memory_limit','768M');
         $importer = new VendorImport();
         $data       = Excel::toArray($importer, $this->inputFile);
         $this->data = $this->processCollection($this->vendor, $data, $this->poVendorCode, $this->itemVendorCode, $this->poNumber);
