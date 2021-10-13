@@ -5,7 +5,7 @@ namespace App\Imports;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class JansportImport implements ToArray, WithHeadingRow
+class OutdoorResearchImport implements ToArray, WithHeadingRow
 {
     /**
      * @param array $array

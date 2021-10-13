@@ -10,7 +10,6 @@ class PickVendor extends Component
     public int   $vendor;
     public array $vendors;
 
-
     public function mount()
     {
         $this->vendor = 0;
@@ -22,7 +21,7 @@ class PickVendor extends Component
         }
     }
 
-    public function vendorChange() {
+    public function updatedVendor() {
         $this->emit('vendorChanged', ($this->vendor == 0) ? '' : $this->vendors[$this->vendor]);
     }
 

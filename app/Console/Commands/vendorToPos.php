@@ -2,15 +2,15 @@
 
 namespace App\Console\Commands;
 
-use App\Exports\POSExport;
-use App\Imports\JansportImport;
+use App\Http\Traits\fileProcessor;
 use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Maatwebsite\Excel\Facades\Excel;
 
 class vendorToPos extends Command
 {
+    use fileProcessor;
+
     protected $vendor;
     protected $poNumber;
     protected $exportFile;
@@ -59,19 +59,14 @@ class vendorToPos extends Command
         $this->makePoNumber();
         $this->makeFilename();
 
-        $arrays            = [];
-        $importCollections = Excel::toArray(new JansportImport, $this->inputFile);
-        foreach ($importCollections as $collections) {
-            foreach ($collections as $row) {
-                $arrays[] = $this->buildArrayFromRow($row);
-            }
-        }
-        $export = new POSExport($arrays);
-        Excel::store($export, $this->exportFile);
+        $import = $this->processImport($this->vendor->name, $this->inputFile, $this->vendor->po_vendor_code, $this->vendor->item_vendor_code, $this->poNumber);
+        $this->createExport($import);
+
         $this->output->text('Finished making '.$this->exportFile.' for '.$this->vendor->name.'!');
 
         return 0;
     }
+
 
 
     protected function makePoNumber()
@@ -88,51 +83,5 @@ class vendorToPos extends Command
             $fileName = $fileName.'.csv';
         }
         $this->exportFile = $fileName;
-    }
-
-
-    protected function buildArrayFromRow($row): array
-    {
-        $poNumber       = $this->poNumber;
-        $orderDate      = Carbon::now()->format('m/d/y');
-        $shipDate       = Carbon::now()->format('m/d/y');
-        $cancelDate     = Carbon::now()->format('m/d/y');
-        $billToStore    = '0';
-        $shipToStore    = '0';
-        $dcs            = '';
-        $poVendorCode   = $this->vendor->po_vendor_code;
-        $itemVendorCode = $this->vendor->item_vendor_code;
-        $cost           = '0';
-        $taxable        = 'taxable';
-        $orderQty       = '0';
-        $conversions    = [
-            'UPC'          => 'upc_code',
-            'Description2' => 'style',
-            'Attr'         => 'color',
-            'Size'         => 'size',
-            'Description1' => 'style_name',
-            'Retail'       => 'price',
-        ];
-
-        return [
-            'PONumber'       => $poNumber,
-            'OrderDate'      => $orderDate,
-            'ShipDate'       => $shipDate,
-            'CancelDate'     => $cancelDate,
-            'BillToStore'    => $billToStore,
-            'ShiptoStore'    => $shipToStore,
-            'UPC'            => trim($row[$conversions['UPC']]),
-            'DCS'            => $dcs,
-            'POVendorCode'   => $poVendorCode,
-            'ItemVendorCode' => $itemVendorCode,
-            'Description2'   => trim($row[$conversions['Description2']]),
-            'Attr'           => trim($row[$conversions['Attr']]),
-            'Size'           => trim($row[$conversions['Size']]),
-            'Description1'   => trim($row[$conversions['Description1']]),
-            'Cost'           => $cost,
-            'Retail'         => trim($row[$conversions['Retail']]),
-            'Taxable'        => $taxable,
-            'Order Qty'      => $orderQty
-        ];
     }
 }
