@@ -93,7 +93,6 @@ trait fileProcessor
         $orderQty       = '0';
         $conversions = $this->conversionBuilder($vendor);
 
-
         return [
             'PONumber'       => $poNumber,
             'OrderDate'      => $orderDate,
@@ -156,8 +155,6 @@ trait fileProcessor
                     'Retail'       => 'msrp',
                 ];
                 break;
-            default:
-                dd('no match for: '.$vendor);
         }
 
         return $conversions;
