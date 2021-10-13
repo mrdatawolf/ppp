@@ -17,22 +17,28 @@
                             <strong>Success!</strong> {{ $message }}
                         </div>
                     @endif
+                        {!! Session::forget('success') !!}
                     @livewire('pick-vendor')
                     @livewire('po-number-input')
-                    {!! Session::forget('success') !!}
+
                     <br>
                     @livewire('po-vendor-code-input')
                     @livewire('item-vendor-code-input')
                     <br>
-                    @livewire('order-date-input')
-                    @livewire('ship-date-input')
-                    @livewire('cancel-date-input')
+                        <div id="dates">
+                            @livewire('order-date-input')
+                            @livewire('ship-date-input')
+                            @livewire('cancel-date-input')
+                        </div>
+
                     <br><hr>
                     @livewire('import-button')
                 </div>
-                @livewire('example-data-table')
             </div>
         </div>
+    </div>
+    <div class="py-20">
+        @livewire('example-data-table')
     </div>
 </x-app-layout>
 
