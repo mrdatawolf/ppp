@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3985a5f4bbae3f99c1613629e0e5f12a",
+    "content-hash": "d3d1ef6cdd80dac4194cbd7fc077649d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2389,6 +2389,69 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/2.1.3"
             },
             "time": "2021-05-25T15:42:17+00:00"
+        },
+        {
+            "name": "mediconesystems/livewire-datatables",
+            "version": "v0.6.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MedicOneSystems/livewire-datatables.git",
+                "reference": "ce518201227e41533bb6ae44491a41a7be5e3192"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MedicOneSystems/livewire-datatables/zipball/ce518201227e41533bb6ae44491a41a7be5e3192",
+                "reference": "ce518201227e41533bb6ae44491a41a7be5e3192",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^7.0|^8.0",
+                "livewire/livewire": "^2.4.4",
+                "maatwebsite/excel": "^3.1",
+                "php": "^7.2.5|^8.0"
+            },
+            "require-dev": {
+                "laravel/legacy-factories": "^1.0.4",
+                "orchestra/testbench": "^4.0|5.0|6.0",
+                "phpunit/phpunit": "^8.0|9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mediconesystems\\LivewireDatatables\\LivewireDatatablesServiceProvider"
+                    ],
+                    "aliases": {
+                        "LivewireDatatables": "Mediconesystems\\LivewireDatatables\\LivewireDatatablesFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mediconesystems\\LivewireDatatables\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Salmon",
+                    "email": "mark.salmon@mediconesystems.com",
+                    "role": "Developer"
+                }
+            ],
+            "homepage": "https://github.com/mediconesystems/livewire-datatables",
+            "keywords": [
+                "livewire-datatables",
+                "mediconesystems"
+            ],
+            "support": {
+                "issues": "https://github.com/MedicOneSystems/livewire-datatables/issues",
+                "source": "https://github.com/MedicOneSystems/livewire-datatables/tree/v0.6.8"
+            },
+            "time": "2021-09-22T12:54:06+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -9023,7 +9086,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3|^8.0"
+        "php": "^7.4|^8.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"

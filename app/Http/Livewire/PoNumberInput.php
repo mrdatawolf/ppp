@@ -7,22 +7,30 @@ use Livewire\Component;
 
 class PoNumberInput extends Component
 {
-    public $poNumber;
-    public $vendorName;
+    public string $poNumber;
+    public bool   $shouldDisplay;
 
     protected $listeners = ['vendorChanged'];
-    public function mount() {
-        $this->setPoNumber();
+
+
+    public function mount()
+    {
+        $this->poNumber      = Carbon::now()->format('mdy');
+        $this->updatedPoNumber($this->poNumber);
+        $this->shouldDisplay = false;
     }
 
-    private function setPoNumber() {
-        $this->poNumber = Carbon::now()->format('mdy');
+
+    public function updatedPoNumber($number)
+    {
+        $this->emit('poNumberChanged', $number);
     }
 
-    public function vendorChanged($name) {
-        $this->vendorName = $name;
-    }
 
+    public function vendorChanged($name)
+    {
+        $this->shouldDisplay = ! empty($name);
+    }
 
 
     public function render()

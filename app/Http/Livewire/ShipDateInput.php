@@ -8,10 +8,23 @@ use Livewire\Component;
 class ShipDateInput extends Component
 {
     public string $shipDate;
+    public bool   $shouldDisplay;
 
-    public function mount() {
-        $this->shipDate = Carbon::now()->format('Y-m-d');
+    protected $listeners = ['vendorChanged'];
+
+
+    public function mount()
+    {
+        $this->shipDate      = Carbon::now()->format('Y-m-d');
+        $this->shouldDisplay = false;
     }
+
+
+    public function vendorChanged($name)
+    {
+        $this->shouldDisplay = ! empty($name);
+    }
+
 
     public function render()
     {

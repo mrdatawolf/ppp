@@ -7,15 +7,28 @@ use Livewire\Component;
 
 class PoVendorCodeInput extends Component
 {
-    public int $vendorId;
+    public int    $vendorId;
     public string $poVendorCode;
-    public $listeners = ['vendorChanged'];
+    public bool   $shouldDisplay;
 
-    public function vendorChanged($name) {
-        $vendor = Vendor::where('name',$name)->first();
-        $this->vendorId = $vendor->id;
-        $this->poVendorCode = $vendor->po_vendor_code;
+    protected $listeners = ['vendorChanged'];
+
+
+    public function mount()
+    {
+        $this->shouldDisplay = false;
     }
+
+
+    public function vendorChanged($name)
+    {
+        $this->shouldDisplay = ! empty($name);
+        $vendor              = Vendor::where('name', $name)->first();
+        $this->vendorId      = $vendor->id;
+        $this->poVendorCode  = $vendor->po_vendor_code;
+        $this->emit('poVendorCodeChanged', $this->poVendorCode);
+    }
+
 
     public function render()
     {

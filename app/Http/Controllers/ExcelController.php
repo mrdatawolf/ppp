@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\POSExport;
-use App\Imports\JansportImport;
+use App\Imports\VendorImport;
 use Illuminate\Http\Request;
 
 class ExcelController extends Controller
@@ -30,7 +30,7 @@ class ExcelController extends Controller
      */
     public function importExcel(Request $request)
     {
-        \Excel::import(new JansportImport,$request->import_file);
+        \Excel::import(new VendorImport,$request->import_file);
 
         \Session::put('success', 'Jansport file is imported successfully.');
 

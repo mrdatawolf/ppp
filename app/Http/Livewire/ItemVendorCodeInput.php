@@ -7,15 +7,28 @@ use Livewire\Component;
 
 class ItemVendorCodeInput extends Component
 {
-    public int $vendorId;
+    public int    $vendorId;
     public string $itemVendorCode;
-    public $listeners = ['vendorChanged'];
+    public bool   $shouldDisplay;
 
-    public function vendorChanged($name) {
-        $vendor = Vendor::where('name',$name)->first();
-        $this->vendorId = $vendor->id;
-        $this->itemVendorCode = $vendor->item_vendor_code;
+    protected $listeners = ['vendorChanged'];
+
+
+    public function mount()
+    {
+        $this->shouldDisplay = false;
     }
+
+
+    public function vendorChanged($name)
+    {
+        $this->shouldDisplay = ! empty($name);
+        $vendor               = Vendor::where('name', $name)->first();
+        $this->vendorId       = $vendor->id;
+        $this->itemVendorCode = $vendor->item_vendor_code;
+        $this->emit('itemVendorCodeChanged', $this->itemVendorCode);
+    }
+
 
     public function render()
     {
