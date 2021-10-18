@@ -8,6 +8,14 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class VendorImport implements ToArray, WithHeadingRow, WithChunkReading
 {
+    protected string $vendor;
+
+    public function __construct($vendor = null)
+    {
+        $this->vendor = $vendor;
+    }
+
+
     /**
      * @param array $array
      *
@@ -21,5 +29,15 @@ class VendorImport implements ToArray, WithHeadingRow, WithChunkReading
     public function chunkSize(): int
     {
         return 1000;
+    }
+
+    public function headingRow(): int
+    {
+        switch ($this->vendor){
+            case 'Outdoor Research' :
+                return 5;
+            default:
+                return 1;
+        }
     }
 }
