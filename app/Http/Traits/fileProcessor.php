@@ -20,7 +20,7 @@ trait fileProcessor
     {
 
         $importCollections = $this->convertFile($inputFile);
-        $arrays            = $this->processCollection($vendor, $importCollections, $poVendorCode, $itemVendorCode,
+        $arrays            = $this->processArray($vendor, $importCollections, $poVendorCode, $itemVendorCode,
             $poNumber);
 
         return $arrays;
@@ -28,11 +28,15 @@ trait fileProcessor
 
 
     /**
+     * @param $vendor
      * @param $importCollections
+     * @param $poVendorCode
+     * @param $itemVendorCode
+     * @param $poNumber
      *
      * @return array
      */
-    protected function processCollection($vendor, $importCollections, $poVendorCode, $itemVendorCode, $poNumber): array
+    protected function processArray($vendor, $importCollections, $poVendorCode, $itemVendorCode, $poNumber): array
     {
         $arrays = [];
         foreach ($importCollections as $collections) {
@@ -42,6 +46,28 @@ trait fileProcessor
         }
 
         return $arrays;
+    }
+
+
+    /**
+     * @param $vendor
+     * @param $importArray
+     * @param $poVendorCode
+     * @param $itemVendorCode
+     * @param $poNumber
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function processCollection($vendor, $importArray, $poVendorCode, $itemVendorCode, $poNumber): \Illuminate\Support\Collection
+    {
+        $collection = [];
+        foreach ($importArray as $array) {
+            foreach ($array as $row) {
+                $collection[] = (object)$this->buildArrayFromRow($vendor, $row, $poVendorCode, $itemVendorCode, $poNumber);
+            }
+        }
+
+        return collect($collection);
     }
 
 

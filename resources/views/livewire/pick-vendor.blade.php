@@ -1,6 +1,6 @@
 <div>
     <label for="vendor">Vendor</label>
-        <select wire:model="vendor" id="vendor" name="vendor" class="form-control border" required>
+        <select wire:model="vendor" id="vendor" name="vendor" class="form-control border" required autofocus>
             @foreach ($vendors as $id => $name)
                 <option value="{{ $id }}">{{ $name }}</option>
             @endforeach
