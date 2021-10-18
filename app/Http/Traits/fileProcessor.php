@@ -18,7 +18,6 @@ trait fileProcessor
      */
     protected function processImport($vendor, $inputFile, $poVendorCode, $itemVendorCode, $poNumber): array
     {
-
         $importCollections = $this->convertFile($inputFile);
         $arrays            = $this->processArray($vendor, $importCollections, $poVendorCode, $itemVendorCode,
             $poNumber);
@@ -61,13 +60,37 @@ trait fileProcessor
     protected function processCollection($vendor, $importArray, $poVendorCode, $itemVendorCode, $poNumber): \Illuminate\Support\Collection
     {
         $collection = [];
-        foreach ($importArray as $array) {
-            foreach ($array as $row) {
-                $collection[] = (object)$this->buildArrayFromRow($vendor, $row, $poVendorCode, $itemVendorCode, $poNumber);
+        foreach ($importArray as $sheet) {
+            foreach ($sheet as $row) {
+                if($this->rowCheck($vendor,$row)) {
+                    $collection[] = (object)$this->buildArrayFromRow($vendor, $row, $poVendorCode, $itemVendorCode,
+                        $poNumber);
+                }
             }
         }
 
         return collect($collection);
+    }
+
+
+    /**
+     * @param $vendor
+     * @param $row
+     *
+     * @return bool
+     */
+    protected function rowCheck($vendor, $row): bool
+    {
+        switch ($vendor) {
+            case 'Jansport' :
+                return (!empty($row['upc_code']) && !empty($row['style']) && !empty($row['style_name']) && !empty($row['price']));
+            case 'Outdoor Research' :
+                return (!empty($row['upc']) && !empty($row['short_description']) && !empty($row['style_name']) && !empty($row['us_msrp']));
+            case 'Kuhl' :
+                return (!empty($row['upc']) && !empty($row['style']) && !empty($row['style_description']) && !empty($row['msrp']));
+        }
+
+        return false;
     }
 
 
