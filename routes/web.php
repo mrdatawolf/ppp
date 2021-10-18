@@ -28,5 +28,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('importExportView', [ExcelC
 Route::middleware(['auth:sanctum', 'verified'])->get('exportExcel/{type}', [ExcelController::class, 'exportExcel'])->name('exportExcel');
 // Route for import excel data to database.
 Route::middleware(['auth:sanctum', 'verified'])->post('importExcel', [ExcelController::class, 'importExcel'])->name('importExcel');
-
 Route::middleware(['auth:sanctum', 'verified'])->resource('vendors', \App\Http\Controllers\VendorCRUDController::class);
+Route::middleware(['auth:sanctum', 'verified'])->resource('colors', \App\Http\Controllers\ColorCRUDController::class);

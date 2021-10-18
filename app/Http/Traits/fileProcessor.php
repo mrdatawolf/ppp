@@ -2,6 +2,7 @@
 
 use App\Exports\POSExport;
 use App\Imports\VendorImport;
+use App\Models\ColorConversion;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -157,7 +158,7 @@ trait fileProcessor
             'POVendorCode'   => $poVendorCode,
             'ItemVendorCode' => $itemVendorCode,
             'Description2'   => trim(($row[$conversions['Description2']]) ?? ''),
-            'Attr'           => trim(($row[$conversions['Attr']]) ?? ''),
+            'Attr'           => $this->convertString(trim(($row[$conversions['Attr']]) ?? '')),
             'Size'           => trim(($row[$conversions['Size']]) ?? ''),
             'Description1'   => trim(($row[$conversions['Description1']]) ?? ''),
             'Cost'           => $cost,
@@ -165,6 +166,13 @@ trait fileProcessor
             'Taxable'        => $taxable,
             'Order Qty'      => $orderQty
         ];
+    }
+
+
+    protected function convertString($original) {
+        $conversion = ColorConversion::where('original', $original);
+
+        return ($conversion->exists()) ? $conversion->first()->convert_to : $original;
     }
 
 
