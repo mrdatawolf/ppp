@@ -23,10 +23,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 // Route for view/blade file.
-Route::get('importExportView', [ExcelController::class, 'importExportView'])->name('importExportView');
+Route::middleware(['auth:sanctum', 'verified'])->get('importExportView', [ExcelController::class, 'importExportView'])->name('importExportView');
 // Route for export/download tabledata to .csv, .xls or .xlsx
-Route::get('exportExcel/{type}', [ExcelController::class, 'exportExcel'])->name('exportExcel');
+Route::middleware(['auth:sanctum', 'verified'])->get('exportExcel/{type}', [ExcelController::class, 'exportExcel'])->name('exportExcel');
 // Route for import excel data to database.
-Route::post('importExcel', [ExcelController::class, 'importExcel'])->name('importExcel');
+Route::middleware(['auth:sanctum', 'verified'])->post('importExcel', [ExcelController::class, 'importExcel'])->name('importExcel');
 
-Route::resource('vendors', \App\Http\Controllers\VendorCRUDController::class);
+Route::middleware(['auth:sanctum', 'verified'])->resource('vendors', \App\Http\Controllers\VendorCRUDController::class);

@@ -14,7 +14,7 @@ class ImportButton extends Component
     use fileProcessor;
 
     public string $vendor;
-    public array  $data;
+    public        $data;
     public        $inputFile;
     public string $poVendorCode;
     public string $itemVendorCode;
@@ -28,7 +28,7 @@ class ImportButton extends Component
     public function mount()
     {
         $this->vendor         = '';
-        $this->data           = [];
+        $this->data           = collect((object)[]);
         $this->poNumber       = '';
         $this->itemVendorCode = '';
         $this->poVendorCode   = '';
