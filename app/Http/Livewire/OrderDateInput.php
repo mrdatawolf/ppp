@@ -20,9 +20,9 @@ class OrderDateInput extends Component
     }
 
 
-    public function vendorChanged($name)
+    public function vendorChanged($vendor)
     {
-        $this->shouldDisplay = ! empty($name);
+        $this->shouldDisplay = ! empty($vendor['name']);
     }
 
 

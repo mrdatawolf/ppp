@@ -13,7 +13,8 @@ class ExampleDataTable extends Component
     public array $data;
     public bool  $shouldDisplay;
 
-    protected $listeners = ['importProcessed', 'vendorChanged'];
+    public $listeners = ['importProcessed', 'vendorChanged'];
+    protected $casts = ['vendor' => 'collection'];
 
 
     public function mount()
@@ -24,9 +25,9 @@ class ExampleDataTable extends Component
     }
 
 
-    public function vendorChanged($name)
+    public function vendorChanged($vendor)
     {
-        $this->shouldDisplay = ! empty($name);
+        $this->shouldDisplay = ! empty($vendor['name']);
     }
 
 

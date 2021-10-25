@@ -7,22 +7,42 @@ use Livewire\Component;
 
 class PickVendor extends Component
 {
-    public int   $vendor;
-    public array $vendors;
+    public string $vendorName;
+    public bool   $showExpandedList;
+    protected     $vendor;
+
+    protected $listeners = ['possibleVendorChanged'];
 
     public function mount()
     {
-        $this->vendor = 0;
+        $this->vendor           = (object)[];
+        $this->showExpandedList = true;
+        $this->vendorName       = '';
+    }
 
-        $vendors = Vendor::orderBy('name')->get();
-        $this->vendors = [0 => 'Select Vendor'];
-        foreach($vendors as $vendor) {
-            $this->vendors[$vendor->id] = $vendor->name;
+    public function flipListIcon() {
+        $this->showExpandedList = ! $this->showExpandedList;
+    }
+
+    public function possibleVendorChanged($name) {
+        if($name !== $this->vendorName) {
+            $this->vendorName = $name;
+            $this->updatedVendorName();
         }
     }
 
-    public function updatedVendor() {
-        $this->emit('vendorChanged', ($this->vendor == 0) ? '' : $this->vendors[$this->vendor]);
+    public function updatedVendorName()
+    {
+        $this->getVendor();
+        $this->emit('vendorNameChanged', $this->vendorName);
+    }
+
+    public function getVendor() {
+        $vendor = Vendor::where('name','like', '%' . $this->vendorName . '%');
+        if($vendor->count() === 1) {
+            $this->vendor = $vendor->first();
+            $this->emit('vendorChanged', $this->vendor);
+        }
     }
 
 

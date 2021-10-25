@@ -13,7 +13,7 @@ class ImportButton extends Component
     use WithFileUploads;
     use fileProcessor;
 
-    public string $vendor;
+    public        $vendor;
     public        $data;
     public        $inputFile;
     public string $poVendorCode;
@@ -22,12 +22,13 @@ class ImportButton extends Component
     public bool   $shouldDisplay;
     public bool   $fileReady;
 
-    protected $listeners = ['poNumberChanged', 'vendorChanged', 'poVendorCodeChanged', 'itemVendorCodeChanged'];
+    public $listeners = ['poNumberChanged', 'vendorChanged', 'poVendorCodeChanged', 'itemVendorCodeChanged'];
+    protected $casts = ['vendor' => 'collection'];
 
 
     public function mount()
     {
-        $this->vendor         = '';
+        $this->vendor         = collect([]);
         $this->data           = collect((object)[]);
         $this->poNumber       = '';
         $this->itemVendorCode = '';
@@ -38,10 +39,10 @@ class ImportButton extends Component
     }
 
 
-    public function vendorChanged($name)
+    public function vendorChanged($vendor)
     {
-        $this->vendor        = $name;
-        $this->shouldDisplay = ! empty($name);
+        $this->vendor        = $vendor;
+        $this->shouldDisplay = ! empty($vendor['name']);
         $this->checkFileReady();
     }
 
@@ -83,9 +84,9 @@ class ImportButton extends Component
     public function processFile()
     {
         ini_set('memory_limit','768M');
-        $importer = new VendorImport($this->vendor);
+        $importer = new VendorImport($this->vendor['name']);
         $data       = Excel::toArray($importer, $this->inputFile);
-        $this->data = $this->processCollection($this->vendor, $data, $this->poVendorCode, $this->itemVendorCode, $this->poNumber);
+        $this->data = $this->processCollection($this->vendor['name'], $data, $this->poVendorCode, $this->itemVendorCode, $this->poNumber);
         $this->emit('importProcessed', $this->data);
     }
 

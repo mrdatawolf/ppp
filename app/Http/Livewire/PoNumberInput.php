@@ -11,6 +11,7 @@ class PoNumberInput extends Component
     public bool   $shouldDisplay;
 
     protected $listeners = ['vendorChanged'];
+    protected $casts = ['vendor' => 'collection'];
 
 
     public function mount()
@@ -27,9 +28,9 @@ class PoNumberInput extends Component
     }
 
 
-    public function vendorChanged($name)
+    public function vendorChanged($vendor)
     {
-        $this->shouldDisplay = ! empty($name);
+        $this->shouldDisplay = ! empty($vendor['name']);
     }
 
 
