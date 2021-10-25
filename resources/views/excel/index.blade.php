@@ -20,19 +20,19 @@
                         {!! Session::forget('success') !!}
                     @livewire('pick-vendor')
                     @livewire('po-number-input')
-
                     <br>
                     @livewire('po-vendor-code-input')
                     @livewire('item-vendor-code-input')
                     <br>
-                        <div id="dates">
-                            @livewire('order-date-input')
-                            @livewire('ship-date-input')
-                            @livewire('cancel-date-input')
-                        </div>
+                    <div id="dates">
+                        @livewire('order-date-input')
+                        @livewire('ship-date-input')
+                        @livewire('cancel-date-input')
+                    </div>
 
                     <br><hr>
                     @livewire('import-button')
+
                 </div>
             </div>
         </div>

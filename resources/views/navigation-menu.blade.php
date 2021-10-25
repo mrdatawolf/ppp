@@ -16,13 +16,13 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
                     <x-jet-nav-link href="{{ route('importExportView') }}" :active="request()->routeIs('import')">
-                        {{ __('Import') }}
+                        <span class="material-icons-outlined">business</span>{{ __('Import') }}
                     </x-jet-nav-link>
                     <x-jet-nav-link href="{{ route('vendors.index') }}" :active="request()->routeIs('vendors.index')">
-                        {{ __('Vendors') }}
+                        <span class="material-icons-outlined">filter_alt</span>{{ __('Vendors') }}
                     </x-jet-nav-link>
                     <x-jet-nav-link href="{{ route('colors.index') }}" :active="request()->routeIs('colors.index')">
-                        {{ __('Colors') }}
+                        <span class="material-icons-outlined">palette</span>{{ __('Colors') }}
                     </x-jet-nav-link>
                 </div>
             </div>

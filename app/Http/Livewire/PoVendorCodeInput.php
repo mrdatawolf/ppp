@@ -3,30 +3,34 @@
 namespace App\Http\Livewire;
 
 use App\Models\Vendor;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class PoVendorCodeInput extends Component
 {
-    public int    $vendorId;
+    public    $vendor;
     public string $poVendorCode;
     public bool   $shouldDisplay;
 
-    protected $listeners = ['vendorChanged'];
+    public $listeners = ['vendorChanged'];
+    protected $casts = ['vendor' => 'collection'];
 
 
     public function mount()
     {
+        $this->vendor = collect([]);
         $this->shouldDisplay = false;
     }
 
 
-    public function vendorChanged($name)
+    public function vendorChanged($vendor)
     {
-        $this->shouldDisplay = ! empty($name);
-        $vendor              = Vendor::where('name', $name)->first();
-        $this->vendorId      = $vendor->id;
-        $this->poVendorCode  = $vendor->po_vendor_code;
-        $this->emit('poVendorCodeChanged', $this->poVendorCode);
+        $this->shouldDisplay = ! empty($vendor['name']);
+        $this->vendor      = $vendor;
+        if(! empty($vendor['po_vendor_code'])) {
+            $this->poVendorCode = $vendor['po_vendor_code'];
+            $this->emit('poVendorCodeChanged', $this->poVendorCode);
+        }
     }
 
 

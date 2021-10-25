@@ -20,13 +20,13 @@ class ItemVendorCodeInput extends Component
     }
 
 
-    public function vendorChanged($name)
+    public function vendorChanged($vendor)
     {
-        $this->shouldDisplay = ! empty($name);
-        $vendor               = Vendor::where('name', $name)->first();
-        $this->vendorId       = $vendor->id;
-        $this->itemVendorCode = $vendor->item_vendor_code;
-        $this->emit('itemVendorCodeChanged', $this->itemVendorCode);
+        $this->shouldDisplay = ! empty($vendor['name']);
+        $this->itemVendorCode = $vendor['item_vendor_code'] ?? '';
+        if(!empty($this->itemVendorCode)) {
+            $this->emit('itemVendorCodeChanged', $this->itemVendorCode);
+        }
     }
 
 

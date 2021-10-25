@@ -10,7 +10,8 @@ class CancelDateInput extends Component
     public string $cancelDate;
     public bool   $shouldDisplay;
 
-    protected $listeners = ['vendorChanged'];
+    public $listeners = ['vendorChanged'];
+    protected $casts = ['vendor' => 'collection'];
 
 
     public function mount()
@@ -20,9 +21,9 @@ class CancelDateInput extends Component
     }
 
 
-    public function vendorChanged($name)
+    public function vendorChanged($vendor)
     {
-        $this->shouldDisplay = ! empty($name);
+        $this->shouldDisplay = ! empty($vendor['name']);
     }
 
 
