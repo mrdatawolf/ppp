@@ -9,48 +9,59 @@ use Livewire\Component;
 class VendorList extends Component
 {
     public Collection $vendors;
-    public bool   $showExpandedList;
-    public $vendor;
-    public string $possibleVendorName;
+    public            $vendor;
+    public string     $vendorClickedName;
+    public string     $visiblity;
+    public            $listeners = ['vendorChanged', 'flipChevron', 'vendorSearchChanged'];
+    protected array   $casts     = ['vendor' => 'collection', 'vendors' => 'collection'];
+    protected bool    $isVisible;
 
-    public $listeners = ['vendorChanged','flipVendorList', 'vendorNameChanged'];
-    protected $casts = ['vendor' => 'collection','vendors' => 'collection'];
 
-    public function mount() {
-        $this->possibleVendorName = '';
-        $this->showExpandedList = true;
+    public function mount()
+    {
+        $this->vendorClickedName = '';
+        $this->setVisiblity(false);
         $this->getPossibleVendors();
     }
 
-    public function vendorChanged($vendor) {
+
+    public function vendorChanged($vendor)
+    {
         $this->vendor = $vendor;
     }
 
-    public function vendorNameChanged($name) {
-        if($name !== $this->possibleVendorName) {
-            $this->possibleVendorName = $name;
+
+    public function vendorSearchChanged($name)
+    {
+        if ($name !== $this->vendorClickedName) {
+            $this->vendorClickedName = $name;
             $this->getPossibleVendors();
+            $this->setVisiblity();
         }
     }
 
-    public function updatedPossibleVendorName($name) {
-        $this->possibleVendorName = $name;
-        $this->getPossibleVendors();
-        $this->emit('possibleVendorChanged', $name);
+
+    public function flipChevron($chevron)
+    {
+        $this->setVisiblity($chevron === "expand_more");
     }
 
-    public function flipVendorList()
-    {
-        $this->showExpandedList = ! $this->showExpandedList;
-    }
 
     protected function getPossibleVendors()
     {
         $getVendors = Vendor::select('id', 'name')->orderBy('name');
-        $this->vendors = (empty($this->possibleVendorName))
-            ? $getVendors->get()
-            : $getVendors->where('name', 'like', '%'.$this->possibleVendorName.'%')->get();
+        $this->vendors = (empty($this->vendorClickedName)) ? $getVendors->get()
+            : $getVendors->where('name', 'like', '%'.$this->vendorClickedName.'%')->get();
     }
+
+
+    protected function setVisiblity($force = null)
+    {
+        $this->isVisible = $force ?? ( ! empty($this->vendorClickedName)) || ! $this->isVisible;
+        $this->visiblity = ($this->isVisible) ? 'visible' : 'invisible';
+    }
+
+
     public function render()
     {
         return view('livewire.vendor-list');
