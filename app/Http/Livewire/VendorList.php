@@ -46,7 +46,7 @@ class VendorList extends Component
             $this->vendorClickedName = $name;
             $this->emit('vendorPicked', $name);
         }
-        $this->setVisiblity(false);
+        $this->setVisiblity(true);
     }
 
 
