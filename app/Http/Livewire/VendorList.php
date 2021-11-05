@@ -41,6 +41,15 @@ class VendorList extends Component
     }
 
 
+    public function vendorClicked($name) {
+        if($this->vendorClickedName !== $name) {
+            $this->vendorClickedName = $name;
+            $this->emit('vendorPicked', $name);
+        }
+        $this->setVisiblity(false);
+    }
+
+
     public function flipChevron($chevron)
     {
         $this->setVisiblity($chevron === "expand_more");

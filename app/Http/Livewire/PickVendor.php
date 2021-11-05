@@ -39,6 +39,7 @@ class PickVendor extends Component
         $vendorQuery = Vendor::where('name', 'like', '%'.$this->vendorSearchName.'%');
         if ($vendorQuery->count() === 1) {
             $this->vendor = $vendorQuery->first();
+            $this->chevron = 'chevron_right';
             $this->emit('vendorChanged', $this->vendor);
         }
     }
@@ -46,8 +47,9 @@ class PickVendor extends Component
 
     public function updatedVendorSearchName()
     {
-        if ($this->vendorSearchName !== $this->vendor->name) {
-            $this->emit('vendorSearchNameChanged', $this->vendorSearchName);
+        if (empty($this->vendor->name) || $this->vendorSearchName !== $this->vendor->name) {
+            $this->flipList();
+            $this->emit('vendorSearchChanged', $this->vendorSearchName);
         }
     }
 
