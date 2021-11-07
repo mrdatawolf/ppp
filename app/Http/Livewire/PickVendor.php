@@ -17,17 +17,7 @@ class PickVendor extends Component
     public function mount()
     {
         $this->vendor           = (object)[];
-        $this->chevron = 'chevron_right';
         $this->vendorSearchName       = '';
-    }
-
-
-    public function flipList()
-    {
-        if(empty($this->vendorSearchName) || $this->chevron === 'chevron_right') {
-            $this->chevron = ($this->chevron === 'chevron_right') ? 'expand_more' : 'chevron_right';
-            $this->emit('flipChevron', $this->chevron);
-        }
     }
 
 
@@ -39,7 +29,6 @@ class PickVendor extends Component
         $vendorQuery = Vendor::where('name', 'like', '%'.$this->vendorSearchName.'%');
         if ($vendorQuery->count() === 1) {
             $this->vendor = $vendorQuery->first();
-            $this->chevron = 'chevron_right';
             $this->emit('vendorChanged', $this->vendor);
         }
     }
@@ -48,7 +37,6 @@ class PickVendor extends Component
     public function updatedVendorSearchName()
     {
         if (empty($this->vendor->name) || $this->vendorSearchName !== $this->vendor->name) {
-            $this->flipList();
             $this->emit('vendorSearchChanged', $this->vendorSearchName);
         }
     }

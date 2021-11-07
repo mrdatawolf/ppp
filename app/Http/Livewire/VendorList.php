@@ -11,22 +11,20 @@ class VendorList extends Component
     public Collection $vendors;
     public            $vendor;
     public string     $vendorClickedName;
-    public string     $visiblity;
-    public            $listeners = ['vendorChanged', 'flipChevron', 'vendorSearchChanged'];
+    public            $listeners = ['vendorChanged', 'vendorSearchChanged'];
     protected array   $casts     = ['vendor' => 'collection', 'vendors' => 'collection'];
-    protected bool    $isVisible;
 
 
     public function mount()
     {
         $this->vendorClickedName = '';
-        $this->setVisiblity(false);
         $this->getPossibleVendors();
     }
 
 
     public function vendorChanged($vendor)
     {
+        $this->vendorClickedName = $vendor['name'];
         $this->vendor = $vendor;
     }
 
@@ -36,7 +34,6 @@ class VendorList extends Component
         if ($name !== $this->vendorClickedName) {
             $this->vendorClickedName = $name;
             $this->getPossibleVendors();
-            $this->setVisiblity();
         }
     }
 
@@ -44,15 +41,9 @@ class VendorList extends Component
     public function vendorClicked($name) {
         if($this->vendorClickedName !== $name) {
             $this->vendorClickedName = $name;
+            $this->getPossibleVendors();
             $this->emit('vendorPicked', $name);
         }
-        $this->setVisiblity(true);
-    }
-
-
-    public function flipChevron($chevron)
-    {
-        $this->setVisiblity($chevron === "expand_more");
     }
 
 
@@ -61,13 +52,6 @@ class VendorList extends Component
         $getVendors = Vendor::select('id', 'name')->orderBy('name');
         $this->vendors = (empty($this->vendorClickedName)) ? $getVendors->get()
             : $getVendors->where('name', 'like', '%'.$this->vendorClickedName.'%')->get();
-    }
-
-
-    protected function setVisiblity($force = null)
-    {
-        $this->isVisible = $force ?? ( ! empty($this->vendorClickedName)) || ! $this->isVisible;
-        $this->visiblity = ($this->isVisible) ? 'visible' : 'invisible';
     }
 
 
