@@ -2,15 +2,15 @@
 
 namespace App\Http\Livewire;
 
-use App\Exports\POSCollectionExport;
-use App\Exports\ShopifyCollectionExport;
+use App\Http\Traits\fileProcessor;
 use Livewire\Component;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ExampleDataTable extends Component
 {
+    use fileProcessor;
+
     public bool  $hasData;
-    public array $data;
+    public       $data;
     public bool  $shouldDisplay;
 
     public $listeners = ['importProcessed', 'vendorChanged'];
@@ -31,42 +31,17 @@ class ExampleDataTable extends Component
     }
 
 
-    public function importProcessed($data)
+    /**
+     * @param $vendorName
+     * @param $data
+     * @param $poVendorCode
+     * @param $itemVendorCode
+     * @param $poNumber
+     */
+    public function importProcessed($vendorName, $data, $poVendorCode, $itemVendorCode, $poNumber)
     {
         $this->hasData = ( ! empty($data));
-        $this->data    = $data;
-    }
-
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function posDownload(): \Symfony\Component\HttpFoundation\BinaryFileResponse
-    {
-        $col=[];
-        foreach($this->data as $d) {
-            $col[] = (object) $d;
-        }
-        $collection = collect($col);
-        $posExport = new POSCollectionExport($collection);
-
-        return Excel::download($posExport,'posExport.csv',\Maatwebsite\Excel\Excel::CSV);
-    }
-
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function shopifyDownload(): \Symfony\Component\HttpFoundation\BinaryFileResponse
-    {
-        $col=[];
-        foreach($this->data as $d) {
-            $col[] = (object) $d;
-        }
-        $collection = collect($col);
-        $posExport = new ShopifyCollectionExport($collection);
-
-        return Excel::download($posExport,'shopifyExport.csv',\Maatwebsite\Excel\Excel::CSV);
+        $this->data    = $this->processCollection($vendorName, $data, $poVendorCode, $itemVendorCode, $poNumber);
     }
 
 
