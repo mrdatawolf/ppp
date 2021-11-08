@@ -43,6 +43,7 @@ class VendorList extends Component
             $this->vendorClickedName = $name;
             $this->getPossibleVendors();
             $this->emit('vendorPicked', $name);
+
         }
     }
 
@@ -50,7 +51,7 @@ class VendorList extends Component
     protected function getPossibleVendors()
     {
         $getVendors = Vendor::select('id', 'name')->orderBy('name');
-        $this->vendors = (empty($this->vendorClickedName)) ? $getVendors->get()
+        $this->vendors = (empty($this->vendorClickedName)) ? $getVendors->where('name','safdfasdfae')->get()
             : $getVendors->where('name', 'like', '%'.$this->vendorClickedName.'%')->get();
     }
 

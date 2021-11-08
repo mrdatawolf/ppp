@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Http\Traits\fileProcessor;
 use App\Imports\VendorImport;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -11,10 +10,9 @@ use Maatwebsite\Excel\Facades\Excel;
 class ImportButton extends Component
 {
     use WithFileUploads;
-    use fileProcessor;
+
 
     public        $vendor;
-    public        $data;
     public        $inputFile;
     public string $poVendorCode;
     public string $itemVendorCode;
@@ -29,7 +27,6 @@ class ImportButton extends Component
     public function mount()
     {
         $this->vendor         = collect([]);
-        $this->data           = collect((object)[]);
         $this->poNumber       = '';
         $this->itemVendorCode = '';
         $this->poVendorCode   = '';
@@ -85,9 +82,8 @@ class ImportButton extends Component
     {
         ini_set('memory_limit','768M');
         $importer = new VendorImport($this->vendor['name']);
-        $data       = Excel::toArray($importer, $this->inputFile);
-        $this->data = $this->processCollection($this->vendor['name'], $data, $this->poVendorCode, $this->itemVendorCode, $this->poNumber);
-        $this->emit('importProcessed', $this->data);
+        $data = Excel::toArray($importer, $this->inputFile);
+        $this->emit('importProcessed', $this->vendor['name'], $data, $this->poVendorCode, $this->itemVendorCode, $this->poNumber);
     }
 
 

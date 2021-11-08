@@ -50,22 +50,37 @@ trait fileProcessor
 
 
     /**
-     * @param $vendor
-     * @param $importArray
-     * @param $poVendorCode
-     * @param $itemVendorCode
-     * @param $poNumber
+     * @param        $vendor
+     * @param        $data
+     * @param        $poVendorCode
+     * @param        $itemVendorCode
+     * @param        $poNumber
+     * @param string $type
      *
      * @return \Illuminate\Support\Collection
      */
-    protected function processCollection($vendor, $importArray, $poVendorCode, $itemVendorCode, $poNumber): \Illuminate\Support\Collection
-    {
+
+    protected function processCollection(
+        $vendor,
+        $data,
+        $poVendorCode,
+        $itemVendorCode,
+        $poNumber,
+        string $type = 'pos'
+    ): \Illuminate\Support\Collection {
         $collection = [];
-        foreach ($importArray as $sheet) {
+        foreach ($data as $sheet) {
             foreach ($sheet as $row) {
-                if($this->rowCheck($vendor,$row)) {
-                    $collection[] = (object)$this->buildArrayFromRow($vendor, $row, $poVendorCode, $itemVendorCode,
-                        $poNumber);
+                if ($this->rowCheck($vendor, $row)) {
+                    switch ($type) {
+                        case 'shopify':
+                            $collection[] = (object)$this->buildShopifyArrayFromRow($vendor, $row, $poVendorCode,
+                                $itemVendorCode, $poNumber);
+                            break;
+                        default:
+                            $collection[] = (object)$this->buildArrayFromRow($vendor, $row, $poVendorCode,
+                                $itemVendorCode, $poNumber);
+                    }
                 }
             }
         }
@@ -84,11 +99,11 @@ trait fileProcessor
     {
         switch ($vendor) {
             case 'Jansport' :
-                return (!empty($row['upc_code']) && !empty($row['style']) && !empty($row['style_name']) && !empty($row['price']));
+                return ( ! empty($row['upc_code']) && ! empty($row['style']) && ! empty($row['style_name']) && ! empty($row['price']));
             case 'Outdoor Research' :
-                return (!empty($row['upc']) && !empty($row['short_description']) && !empty($row['style_name']) && !empty($row['us_msrp']));
+                return ( ! empty($row['upc']) && ! empty($row['short_description']) && ! empty($row['style_name']) && ! empty($row['us_msrp']));
             case 'Kuhl' :
-                return (!empty($row['upc']) && !empty($row['style']) && !empty($row['style_description']) && !empty($row['msrp']));
+                return ( ! empty($row['upc']) && ! empty($row['style']) && ! empty($row['style_description']) && ! empty($row['msrp']));
         }
 
         return false;
@@ -164,12 +179,89 @@ trait fileProcessor
             'Cost'           => $cost,
             'Retail'         => trim(($row[$conversions['Retail']]) ?? ''),
             'Taxable'        => $taxable,
-            'Order Qty'      => $orderQty
+            'OrderQty'      => $orderQty
         ];
     }
 
 
-    protected function convertString($original) {
+    /**
+     * @param $vendor
+     * @param $row
+     * @param $poVendorCode
+     * @param $itemVendorCode
+     * @param $poNumber
+     *
+     * @return array
+     */
+    protected function buildShopifyArrayFromRow($vendor, $row, $poVendorCode, $itemVendorCode, $poNumber): array
+    {
+        $orderDate         = Carbon::now()->format('m/d/y');
+        $shipDate          = Carbon::now()->format('m/d/y');
+        $cancelDate        = Carbon::now()->format('m/d/y');
+        $billToStore       = '0';
+        $shipToStore       = '0';
+        $cost              = '0';
+        $taxable           = 'taxable';
+        $orderQty          = '0';
+        $conversions       = $this->conversionBuilder($vendor);
+        $variantWeightUnit = 'g';
+        $status            = 'active';
+
+        return [
+            'Handle'                                    => trim(($row[$conversions['UPC']]) ?? ''),
+            'Title'                                     => trim(($row[$conversions['Description1']]) ?? ''),
+            'Body (HTML)'                               => trim(($row[$conversions['Description2']]) ?? ''),
+            'Vendor'                                    => '',
+            'Type'                                      => '',
+            'Tags'                                      => '',
+            'Published'                                 => $shipDate,
+            'Option1 Name'                              => 'size',
+            'Option1 Value'                             => trim(($row[$conversions['Size']]) ?? ''),
+            'Option2 Name'                              => 'color',
+            'Option2 Value'                             => trim(($row[$conversions['Attr']]) ?? ''),
+            'Option3 Name'                              => '',
+            'Option3 Value'                             => '',
+            'Variant SKU'                               => trim(($row[$conversions['UPC']]) ?? ''),
+            'Variant Grams'                             => '',
+            'Variant Inventory Tracker'                 => '',
+            'Variant Inventory Qty'                     => $orderQty,
+            'Variant Inventory Policy'                  => '',
+            'Variant Fulfillment Service'               => '',
+            'Variant Price'                             => $billToStore,
+            'Variant Compare At Price'                  => '',
+            'Variant Requires Shipping'                 => '',
+            'Variant Taxable'                           => '',
+            'Variant Barcode'                           => trim(($row[$conversions['SKU']]) ?? ''),
+            'Image Src'                                 => '',
+            'Image Position'                            => '',
+            'Image Alt Text'                            => '',
+            'Gift Card'                                 => '',
+            'SEO Title'                                 => '',
+            'SEO Description'                           => '',
+            'Google Shopping / Google Product Category' => '',
+            'Google Shopping / Gender'                  => '',
+            'Google Shopping / Age Group'               => '',
+            'Google Shopping / MPN'                     => '',
+            'Google Shopping / AdWords Grouping'        => '',
+            'Google Shopping / AdWords Labels'          => '',
+            'Google Shopping / Condition'               => '',
+            'Google Shopping / Custom Product'          => '',
+            'Google Shopping / Custom Label 0'          => '',
+            'Google Shopping / Custom Label 1'          => '',
+            'Google Shopping / Custom Label 2'          => '',
+            'Google Shopping / Custom Label 3'          => '',
+            'Google Shopping / Custom Label 4'          => '',
+            'Variant Image'                             => '',
+            'Variant Weight Unit'                       => $variantWeightUnit,
+            'Variant Tax Code'                          => '',
+            'Cost per item'                             => trim(($row[$conversions['Retail']]) ?? ''),
+            'Status'                                    => $status
+        ];
+    }
+
+
+    protected function convertString($original)
+    {
         $conversion = ColorConversion::where('original', $original);
 
         return ($conversion->exists()) ? $conversion->first()->convert_to : $original;

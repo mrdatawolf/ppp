@@ -1,7 +1,5 @@
 <div class="@if(! $shouldDisplay) hidden @endif">
     @if($hasData)
-        <button wire:click="posDownload" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">Download POS CSV</button>
-        <button wire:click="shopifyDownload" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">Download Shopify CSV</button>
         <table class="table table-bordered table-auto">
             <thead class="bg-gray-50">
             <tr>
@@ -25,26 +23,26 @@
                 <th class="px-4 py-1 text-xs text-gray-500">Order Qty</th>
             </tr>
             </thead>
-            @foreach($data as $array)
+            @foreach($data as $row)
                 <tr class="whitespace-nowrap">
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['PONumber'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['OrderDate'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['ShipDate'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['CancelDate'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['BillToStore'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['ShiptoStore'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['UPC'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['DCS'] }}</td>
-                    <td class="px-2 py-1 text-sm text-gray-500">{{ $array['POVendorCode'] }}</td>
-                    <td class="px-2 py-1 text-sm text-gray-500">{{ $array['ItemVendorCode'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['Description2'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['Attr'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['Size'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['Description1'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['Cost'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['Retail'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['Taxable'] }}</td>
-                    <td class="px-4 py-1 text-sm text-gray-500">{{ $array['Order Qty'] }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->PONumber }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->OrderDate }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->ShipDate }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->CancelDate }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->BillToStore }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->ShiptoStore }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->UPC }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->DCS }}</td>
+                    <td class="px-2 py-1 text-sm text-gray-500">{{ $row->POVendorCode }}</td>
+                    <td class="px-2 py-1 text-sm text-gray-500">{{ $row->ItemVendorCode }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->Description2 }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->Attr }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->Size }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->Description1 }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->Cost }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->Retail }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->Taxable }}</td>
+                    <td class="px-4 py-1 text-sm text-gray-500">{{ $row->OrderQty }}</td>
                 </tr>
             @endforeach
         </table>
