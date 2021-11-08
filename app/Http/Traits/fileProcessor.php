@@ -231,7 +231,7 @@ trait fileProcessor
             'Variant Compare At Price'                  => '',
             'Variant Requires Shipping'                 => '',
             'Variant Taxable'                           => '',
-            'Variant Barcode'                           => trim(($row[$conversions['SKU']]) ?? ''),
+            'Variant Barcode'                           => trim(($row[$conversions['UPC']]) ?? ''),
             'Image Src'                                 => '',
             'Image Position'                            => '',
             'Image Alt Text'                            => '',

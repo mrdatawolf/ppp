@@ -3,11 +3,14 @@
 namespace App\Http\Livewire;
 
 use App\Exports\POSCollectionExport;
+use App\Http\Traits\fileProcessor;
 use Livewire\Component;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DownloadPos extends Component
 {
+    use fileProcessor;
+
     public bool  $hasData;
     public       $data;
     public bool  $shouldDisplay;
@@ -26,10 +29,10 @@ class DownloadPos extends Component
         $this->shouldDisplay = ! empty($vendor['name']);
     }
 
-    public function importProcessed($data)
+    public function importProcessed($vendorName, $data, $poVendorCode, $itemVendorCode, $poNumber)
     {
         $this->hasData = ( ! empty($data));
-        $this->data    = $data;
+        $this->data    = $this->processCollection($vendorName, $data, $poVendorCode, $itemVendorCode, $poNumber);
     }
 
 
