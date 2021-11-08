@@ -38,6 +38,8 @@
         </div>
     </div>
     <div class="py-20">
+        @livewire('download-pos')
+        @livewire('download-shopify')
         @livewire('example-data-table')
     </div>
 </x-app-layout>

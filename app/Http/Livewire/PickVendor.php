@@ -16,7 +16,7 @@ class PickVendor extends Component
 
     public function mount()
     {
-        $this->vendor           = (object)[];
+        $this->vendor           = Vendor::first();
         $this->vendorSearchName       = '';
     }
 
@@ -29,6 +29,7 @@ class PickVendor extends Component
         $vendorQuery = Vendor::where('name', 'like', '%'.$this->vendorSearchName.'%');
         if ($vendorQuery->count() === 1) {
             $this->vendor = $vendorQuery->first();
+            $this->vendorSearchName = $name;
             $this->emit('vendorChanged', $this->vendor);
         }
     }
